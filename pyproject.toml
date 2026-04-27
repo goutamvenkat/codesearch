@@ -1,0 +1,25 @@
+[project]
+name = "codesearch"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "lancedb>=0.30.2",
+    "pathspec>=1.1.1",
+    "pydantic>=2.13.3",
+    "rich>=14.1.0",
+    "sentence-transformers>=5.1.0",
+    "textual>=8.2.4",
+    "textual-dev>=1.8.0",
+    "tree-sitter>=0.25.2",
+    "tree-sitter-languages>=1.10.2",
+    "tree-sitter-python>=0.25.0",
+]
+
+[project.scripts]
+codesearch = "codesearch.main:main"
+codesearch-ui = "codesearch.ui.tui:main"
+
+[tool.uv]
+package = true
