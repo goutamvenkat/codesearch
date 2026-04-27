@@ -15,33 +15,33 @@ CodeSearch is a cross-repository semantic code search TUI tool. It leverages the
 ```mermaid
 graph TD
     User([User]) -->|Queries| TUI[Textual TUI]
-    
-    subgraph Storage and Retrieval
-        LanceDB[("LanceDB<br/>~/.lancedb")]
-        Embedder["SentenceTransformers<br/>all-MiniLM-L6-v2"]
+
+    subgraph Storage_and_Retrieval[Storage and Retrieval]
+        LanceDB[("LanceDB ~/.lancedb")]
+        Embedder["SentenceTransformers all-MiniLM-L6-v2"]
     end
 
-    TUI -->|"Search Query"| Embedder
-    Embedder -->|"Query Vector"| LanceDB
-    LanceDB -->|"Hybrid Search<br/>(Vector + BM25 Text)"| TUI
-    
-    subgraph Indexing Engine (Job)
+    TUI -->|Search Query| Embedder
+    Embedder -->|Query Vector| LanceDB
+    LanceDB -->|"Hybrid Search (Vector + BM25 Text)"| TUI
+
+    subgraph Indexing_Engine[Indexing Engine]
         CodeRepos[Local Repositories]
         Gitignore[.gitignore Parser]
-        Merkle["Merkle Tree Diffing<br/>Identify Added/Modified/Deleted"]
-        Workers["WorkStealingPool<br/>Concurrent Processing"]
-        AST["Chunkers<br/>Tree-Sitter AST & Fallback"]
-        Writer["LanceWriter<br/>Async Queue Processing"]
-        
-        CodeRepos -->|"Read Dir"| Merkle
-        CodeRepos -.->|"Filter"| Gitignore
-        Gitignore -.->|"Ignore rules"| Merkle
-        Merkle -->|"Changed Files"| Workers
-        Workers -->|"Source Code"| AST
-        AST -->|"Code Chunks"| Embedder
-        Embedder -->|"Chunk Vectors and<br/>File Mean Vectors"| Writer
-        Writer -->|"Upsert Records"| LanceDB
-        Writer -->|"Build FTS Index"| LanceDB
+        Merkle["Merkle Tree Diffing - Added/Modified/Deleted"]
+        Workers["WorkStealingPool - Concurrent Processing"]
+        AST["Chunkers - Tree-Sitter AST and Fallback"]
+        Writer["LanceWriter - Async Queue Processing"]
+
+        CodeRepos -->|Read Dir| Merkle
+        CodeRepos -.->|Filter| Gitignore
+        Gitignore -.->|Ignore rules| Merkle
+        Merkle -->|Changed Files| Workers
+        Workers -->|Source Code| AST
+        AST -->|Code Chunks| Embedder
+        Embedder -->|"Chunk Vectors and File Mean Vectors"| Writer
+        Writer -->|Upsert Records| LanceDB
+        Writer -->|Build FTS Index| LanceDB
     end
 ```
 
